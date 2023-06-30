@@ -1,1 +1,3 @@
 /venv
+/mail_api/mail_api/__pycache__
+mail_api/mailsender/__pycache__
