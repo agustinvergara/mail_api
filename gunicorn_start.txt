@@ -1,0 +1,41 @@
+###THIS FILE IS JUST FOR PASTING INSIDE THE gunicorn_start
+###BEFORE INSTALLING ALL THE VENV AND THE PIP DEPENDENCIES
+###INSIDE requirements.txt YOU WILL HAVE TO CREATE A FILE 
+###INSIDE venv/bin/ CALLED gunicorn_start THE ROUTE IS GOING
+###TO LOOK LIKE THIS venv/bin/gunicorn_start AND PASTE INSIDE
+###THE FILE ALL THAT IS SPECIFIED BELOW BUT YOU HAVE TO TAKE
+###CARE ABOUT THE ROUTES OF DJANGODIR= AND SOCKFILE= 
+###IF YOU NEED HELP YOU CAN CHECK THIS TUTORIAL:
+###https://www.youtube.com/watch?v=RIE0O0Lbk8U
+###TO FINISH, DON'T PASTE THIS COMMENTS ON THE gunicorn_start
+
+#!/usr/bin/env bash
+
+NAME='mail_api'
+DJANGODIR=~/mail_api/mail_api
+SOCKFILE=~/mail_api/mail_api/run/gunicorn.sock
+USER=root
+GROUP=root
+NUM_WORKERS=2
+DJANGO_SETTINGS_MODULE=mail_api.settings
+DJANGO_WSGI_MODULE=mail_api.wsgi
+TIMEOUT=120
+
+cd $(dirname "$0")/$DJANGODIR
+
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+exec "$VIRTUAL_ENV/bin/gunicorn" ${DJANGO_WSGI_MODULE}:application \
+--name $NAME \
+--workers $NUM_WORKERS \
+--timeout $TIMEOUT \
+--user=$USER \
+--group=$GROUP \
+--bind=unix:$SOCKFILE \
+--log-level=debug \
+--log-file=-
+

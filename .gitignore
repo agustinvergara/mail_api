@@ -1,4 +1,5 @@
 /venv
+./mail_api/__pycache__/
 mail_api/__pycache__/
 mail_api/mailsender/__pycache__
 mailsender/migrations/__pycache__
