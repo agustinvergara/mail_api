@@ -1,0 +1,11 @@
+##this txt is my working configuration for the supervisorctl that is controlling 
+##my gunicorn server
+
+[program:mail_api]
+command=/root/mail_api/venv/bin/gunicorn_start
+user=root
+directory=/root/mail_api/mail_api
+autorestart=true
+redirect_stderr=true
+redirect_stderr=true
+stdout_logfile=~/mail_api/logs/supervisor.log
